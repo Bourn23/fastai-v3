@@ -77,4 +77,4 @@ async def predict(request):
 
 if __name__ == '__main__':
     if 'serve' in sys.argv:
-        uvicorn.run(app=app, host='0.0.0.0', port=3001, log_level="info")
+        uvicorn.run(app=app, host='0.0.0.0', port=5000, log_level="info")
