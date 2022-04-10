@@ -63,6 +63,17 @@ async def analyze(request):
     prediction = learn.predict(img)[0]
     return JSONResponse({'result': str(prediction)})
 
+@app.route('/predict',methods=['POST'])
+def predict():
+    # get image from json
+    image = request.get_data()
+    image = open_image(io.BytesIO(image))
+    image = image.resize((3, 384, 512))
+    # predict the image
+    pred_class,pred_idx,outputs = learn.predict(image)
+
+    # print the prediction
+    return jsonify({"prediction":str(pred_class)})
 
 if __name__ == '__main__':
     if 'serve' in sys.argv:
