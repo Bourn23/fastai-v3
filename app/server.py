@@ -64,17 +64,17 @@ async def analyze(request):
     return JSONResponse({'result': str(prediction)})
 
 @app.route('/predict',methods=['POST'])
-def predict():
-    # get image from json
-    image = request.get_data()
+async def predict(request):
+    image = await request.body()
+
     image = open_image(io.BytesIO(image))
     image = image.resize((3, 384, 512))
     # predict the image
     pred_class,pred_idx,outputs = learn.predict(image)
 
     # print the prediction
-    return jsonify({"prediction":str(pred_class)})
+    return JSONResponse({"prediction":str(pred_class)})
 
 if __name__ == '__main__':
     if 'serve' in sys.argv:
-        uvicorn.run(app=app, host='0.0.0.0', port=5000, log_level="info")
+        uvicorn.run(app=app, host='0.0.0.0', port=3001, log_level="info")
